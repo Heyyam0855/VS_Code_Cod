@@ -86,6 +86,7 @@ def train_model():
     
     # Load MNIST dataset
     print("\nLoading MNIST dataset...")
+    # Normalize using MNIST dataset mean (0.1307) and std (0.3081)
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
@@ -137,13 +138,16 @@ def train_model():
     print("\nMaking predictions on first 5 test samples...")
     model.eval()
     with torch.no_grad():
-        sample_data = next(iter(test_loader))
-        X, y = sample_data[0][:5].to(device), sample_data[1][:5]
-        predictions = model(X)
-        predicted_labels = predictions.argmax(1)
-        
-        for i in range(5):
-            print(f"Sample {i+1}: Predicted={predicted_labels[i].item()}, Actual={y[i].item()}")
+        # Get first batch from test loader
+        for X, y in test_loader:
+            X_sample = X[:5].to(device)
+            y_sample = y[:5]
+            predictions = model(X_sample)
+            predicted_labels = predictions.argmax(1)
+            
+            for i in range(5):
+                print(f"Sample {i+1}: Predicted={predicted_labels[i].item()}, Actual={y_sample[i].item()}")
+            break
     
     return model
 

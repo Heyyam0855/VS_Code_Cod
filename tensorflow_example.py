@@ -65,7 +65,7 @@ def train_model():
     
     # Make predictions
     print("\nMaking predictions on first 5 test samples...")
-    predictions = model.predict(x_test[:5])
+    predictions = model(x_test[:5]).numpy()
     for i in range(5):
         predicted_label = np.argmax(predictions[i])
         true_label = y_test[i]
