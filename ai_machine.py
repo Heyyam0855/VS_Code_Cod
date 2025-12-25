@@ -8,6 +8,13 @@ from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+try:
+    import tensorflow as tf
+    from tensorflow import keras
+    TENSORFLOW_AVAILABLE = True
+except ImportError:
+    TENSORFLOW_AVAILABLE = False
+
 
 class AIMachine:
     """
@@ -29,26 +36,23 @@ class AIMachine:
         
     def build_model(self):
         """Build a simple neural network model"""
-        try:
-            import tensorflow as tf
-            from tensorflow import keras
-            
-            self.model = keras.Sequential([
-                keras.layers.Dense(self.hidden_units, activation='relu', input_shape=(self.input_dim,)),
-                keras.layers.Dropout(0.2),
-                keras.layers.Dense(32, activation='relu'),
-                keras.layers.Dense(1, activation='sigmoid')
-            ])
-            
-            self.model.compile(
-                optimizer='adam',
-                loss='binary_crossentropy',
-                metrics=['accuracy']
-            )
-            return True
-        except ImportError:
-            print("TensorFlow not installed. Please install it using: pip install tensorflow")
+        if not TENSORFLOW_AVAILABLE:
+            print("TensorFlow not installed. Please install it using: pip install -r requirements.txt")
             return False
+        
+        self.model = keras.Sequential([
+            keras.layers.Dense(self.hidden_units, activation='relu', input_shape=(self.input_dim,)),
+            keras.layers.Dropout(0.2),
+            keras.layers.Dense(32, activation='relu'),
+            keras.layers.Dense(1, activation='sigmoid')
+        ])
+        
+        self.model.compile(
+            optimizer='adam',
+            loss='binary_crossentropy',
+            metrics=['accuracy']
+        )
+        return True
     
     def train(self, X, y, epochs=10, batch_size=32, validation_split=0.2):
         """
