@@ -1,0 +1,16 @@
+# TensorFlow and PyTorch AI Machine Learning Dependencies
+
+# TensorFlow
+tensorflow>=2.13.0
+
+# PyTorch (CPU version - for GPU, adjust accordingly)
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Common ML libraries
+numpy>=1.24.0
+matplotlib>=3.7.0
+scikit-learn>=1.3.0
+
+# Jupyter support (optional)
+jupyter>=1.0.0
